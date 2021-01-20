@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { IGBusinessAccount } from "../../common/interfaces/IG-business-account.interface";
 import facebookAPI from "../../common/utils/facebookAPI";
+import User from "../../components/user/user.component";
 import InstagramBusinessAccountList from "../../components/instagramBusinessAccount/instagramBusinessAccountList.component";
 interface HomeProps {
 }
@@ -21,7 +22,8 @@ class Home extends Component<HomeProps, HomeState> {
 
   render() {
     return (
-      <div>
+      <div className="home">
+        <User />
         <InstagramBusinessAccountList arrayOfInstagramBusinessAccounts={this.state.arrayOfInstagramBusinessAccounts}/>
       </div>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Header from '../header/header.component'
+// import Header from '../header/header.component'
 import About from '../../pages/about/about.page';
 import Home from '../../pages/home/home.page';
 import Login from '../../pages/login/login.page';
@@ -12,6 +12,7 @@ import { ApolloProvider } from '@apollo/client';
 import client from '../../common/apollo-client';
 
 const App: React.FC = () => {
+    console.log(process.env.FACEBOOK_APP_ID || "12345");
     return (
         <ApolloProvider client={client}>
             <Router>
