@@ -3,12 +3,11 @@ import { IGBusinessAccount } from "../../common/interfaces/IG-business-account.i
 import facebookAPI from "../../common/utils/facebookAPI";
 import User from "../../components/user/user.component";
 import InstagramBusinessAccountList from "../../components/instagramBusinessAccount/instagramBusinessAccountList.component";
-interface HomeProps {
-}
+interface HomeProps {}
 
 interface HomeState {
-    isLoading: boolean,
-    arrayOfInstagramBusinessAccounts: IGBusinessAccount[];
+  isLoading: boolean;
+  arrayOfInstagramBusinessAccounts: IGBusinessAccount[];
 }
 
 class Home extends Component<HomeProps, HomeState> {
@@ -16,7 +15,7 @@ class Home extends Component<HomeProps, HomeState> {
     super(props);
     this.state = {
       isLoading: true,
-      arrayOfInstagramBusinessAccounts: []
+      arrayOfInstagramBusinessAccounts: [],
     };
   }
 
@@ -24,19 +23,24 @@ class Home extends Component<HomeProps, HomeState> {
     return (
       <div className="home">
         <User />
-        <InstagramBusinessAccountList arrayOfInstagramBusinessAccounts={this.state.arrayOfInstagramBusinessAccounts}/>
+        <InstagramBusinessAccountList
+          arrayOfInstagramBusinessAccounts={
+            this.state.arrayOfInstagramBusinessAccounts
+          }
+        />
       </div>
     );
   }
 
   async componentDidMount() {
     const accessToken = localStorage.getItem("accessToken") || "";
-    const arrayOfInstagramBusinessAccounts: Array<IGBusinessAccount> = await this.getAllPagesWithUser(accessToken);
-    this.setState({
-          isLoading: false,
-          arrayOfInstagramBusinessAccounts: arrayOfInstagramBusinessAccounts,
-        }
+    const arrayOfInstagramBusinessAccounts: Array<IGBusinessAccount> = await this.getAllPagesWithUser(
+      accessToken
     );
+    this.setState({
+      isLoading: false,
+      arrayOfInstagramBusinessAccounts: arrayOfInstagramBusinessAccounts,
+    });
   }
 
   getAllPagesWithUser = async (accessToken: string): Promise<any> => {
@@ -45,33 +49,39 @@ class Home extends Component<HomeProps, HomeState> {
 
     let accounts = await this.getAllAccounts(accessToken);
     const listOfPages = accounts?.data?.data;
-      for (let index = 0; index < listOfPages.length; index++) {
-        const page: { id: string } = listOfPages[index];
-        getIGAccPromiseArray.push(this.getInstagramBusinessAccount(page.id, accessToken))
-      }
+    for (let index = 0; index < listOfPages.length; index++) {
+      const page: { id: string } = listOfPages[index];
+      getIGAccPromiseArray.push(
+        this.getInstagramBusinessAccount(page.id, accessToken)
+      );
+    }
 
     let getIGAccPromiseResults = await Promise.all(getIGAccPromiseArray);
     for (const response of getIGAccPromiseResults) {
-        const igAcc: { id: string } = response?.data?.instagram_business_account;
-        getIGAccInfoPromiseArray.push(this.getIGUserMetrics(igAcc.id, accessToken));
+      const igAcc: { id: string } = response?.data?.instagram_business_account;
+      getIGAccInfoPromiseArray.push(
+        this.getIGUserMetrics(igAcc.id, accessToken)
+      );
     }
 
-    let getIGAccInfoPromiseResults = await Promise.all(getIGAccInfoPromiseArray);
+    let getIGAccInfoPromiseResults = await Promise.all(
+      getIGAccInfoPromiseArray
+    );
     const arrayOfInstagramBusinessAccounts: Array<IGBusinessAccount> = [];
     for (const response of getIGAccInfoPromiseResults) {
-        let instagramBusinessAccount: IGBusinessAccount = {
-          id: response.data.id,
-          ig_id: response.data.ig_id,
-          biography: response.data.biography,
-          followers_count: response.data.followers_count,
-          follows_count: response.data.follows_count,
-          media_count: response.data.media_count,
-          name: response.data.name,
-          profile_picture_url: response.data.profile_picture_url,
-          username: response.data.username,
-          website: response.data.website,
-        };
-        arrayOfInstagramBusinessAccounts.push(instagramBusinessAccount);
+      let instagramBusinessAccount: IGBusinessAccount = {
+        id: response.data.id,
+        ig_id: response.data.ig_id,
+        biography: response.data.biography,
+        followers_count: response.data.followers_count,
+        follows_count: response.data.follows_count,
+        media_count: response.data.media_count,
+        name: response.data.name,
+        profile_picture_url: response.data.profile_picture_url,
+        username: response.data.username,
+        website: response.data.website,
+      };
+      arrayOfInstagramBusinessAccounts.push(instagramBusinessAccount);
     }
 
     return arrayOfInstagramBusinessAccounts;
