@@ -16,7 +16,7 @@ const InstagramBusinessAccountItem: React.FC<{
 
   return (
     <div className="instagramBusinessAccount">
-      <Link to="/instagramBusinessAccount">
+      <Link to={{pathname: "/instagramBusinessAccount", state: { id: igBusinessAccount.id }}}>
         <img
           className="igBusinessAccount_profile_picture_url"
           src={igBusinessAccount.profile_picture_url}
