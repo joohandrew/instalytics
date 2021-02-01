@@ -1,5 +1,5 @@
 import React from "react";
-import Facebook from "../../components/login/facebook/facebook.component";
+import Facebook from "../../components/login/facebook/facebook";
 
 const Login: React.FC = () => {
   return (

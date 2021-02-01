@@ -6,8 +6,6 @@ const Facebook: React.FC = () => {
   const history = useHistory();
 
   const responseFacebook = (response: any) => {
-    console.log(response);
-    // TODO: should probably store user properties in database of some sort
     localStorage.setItem("name", response.name);
     localStorage.setItem("email", response.email);
     localStorage.setItem("picture", response.picture.data.url);

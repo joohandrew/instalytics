@@ -1,4 +1,4 @@
-export interface IGBusinessAccount {
+export interface IInstagramBusinessAccount {
     id: string
     ig_id: number
     biography: string

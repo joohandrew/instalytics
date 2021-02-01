@@ -1,5 +1,5 @@
 import React from "react";
-import User from "../../components/user/user.component";
+import User from "../../components/user/user";
 
 const Account: React.FC = () => {
   return (

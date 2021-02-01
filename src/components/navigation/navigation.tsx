@@ -1,3 +1,4 @@
+// Components
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -7,6 +8,7 @@ import {
   withRouter,
 } from "react-router-dom";
 
+// Material-UI
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";

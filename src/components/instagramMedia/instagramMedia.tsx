@@ -1,6 +1,8 @@
+// Components
 import React from "react";
-import { instagramMedia } from "../../common/interfaces/InstagramMedia.interface";
+import { IMedia } from "../../common/interfaces/IMedia";
 
+// Material-UI
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const renderMediaInsight = (media: instagramMedia) => {
+const renderMediaInsight = (media: IMedia) => {
   switch (media.media_type) {
     case "IMAGE": {
       return (
@@ -84,7 +86,7 @@ const renderMediaInsight = (media: instagramMedia) => {
   }
 };
 
-const renderMediaData = (media: instagramMedia) => {
+const renderMediaData = (media: IMedia) => {
   return (
     <div className="mediaData">
       <p>Media ID: {media.id}</p>
@@ -96,7 +98,7 @@ const renderMediaData = (media: instagramMedia) => {
 };
 
 const InstagramMedia: React.FC<{
-  media: instagramMedia;
+  media: IMedia;
 }> = ({ media }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);

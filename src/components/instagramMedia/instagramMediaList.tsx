@@ -1,12 +1,14 @@
+// Components
 import React from "react";
-import { instagramMedia } from "../../common/interfaces/InstagramMedia.interface";
-import InstagramMedia from "./instagramMedia.component";
+import { IMedia } from "../../common/interfaces/IMedia";
+import InstagramMedia from "./instagramMedia";
 
+// Material-UI
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+
 interface InstagramMediaListProps {
-  mediaArray: instagramMedia[];
+  mediaArray: IMedia[];
 }
 
 const useStyles = makeStyles((theme) => ({

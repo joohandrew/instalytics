@@ -1,15 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Home from "../../pages/home/home.page";
-import Login from "../../pages/login/login.page";
-import InstagramBusinessAccount from "../../pages/instagramBusinessAccount/instagramBusinessAccount.page";
-
-import "../../common/styles";
-import "./app.component.css";
-import Navigation from "../navigation/navigation.component";
-import Account from "../../pages/account/account.page";
-import About from "../../pages/about/about.page";
+// Components
+import Home from "../../pages/home/home";
+import Login from "../../pages/login/login";
+import InstagramBusinessAccount from "../../pages/instagramBusinessAccount/instagramBusinessAccount";
+import Navigation from "../navigation/navigation";
+import Account from "../../pages/account/account";
+import About from "../../pages/about/about";
 
 const App: React.FC = () => {
   return (
