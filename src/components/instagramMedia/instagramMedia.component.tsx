@@ -1,75 +1,156 @@
-import { access } from "fs";
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router-dom";
-import facebookAPI from "../../common/utils/facebookAPI";
+import React from "react";
 import { instagramMedia } from "../../common/interfaces/InstagramMedia.interface";
 
-export const getMediaInsightsForPhotoAndVideo = async (
-  mediaID: string,
-  accessToken: string
-): Promise<any> => {
-  try {
-    const requestURL = `/${mediaID}/insights?metric=engagement,impressions,reach,saved,video_views&access_token=${accessToken}`;
-    const response = await facebookAPI.get(requestURL);
-    return response;
-  } catch (err) {
-    console.log(
-      `There is an error occurred while making request to FB Graph API: ${err}`
-    );
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import { red } from "@material-ui/core/colors";
+import ShareIcon from "@material-ui/icons/Share";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      maxWidth: 345,
+    },
+    media: {
+      height: 0,
+      paddingTop: "56.25%", // 16:9
+    },
+    expand: {
+      transform: "rotate(0deg)",
+      marginLeft: "auto",
+      transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shortest,
+      }),
+    },
+    expandOpen: {
+      transform: "rotate(180deg)",
+    },
+    avatar: {
+      backgroundColor: red[500],
+    },
+  })
+);
+
+const renderMediaInsight = (media: instagramMedia) => {
+  switch (media.media_type) {
+    case "IMAGE": {
+      return (
+        <div className="insights">
+          <p>Engagement: {media.insight?.engagement}</p>
+          <p>Impressions: {media.insight?.impressions}</p>
+          <p>Reach: {media.insight?.reach}</p>
+          <p>Saved: {media.insight?.saved}</p>
+        </div>
+      );
+    }
+    case "VIDEO": {
+      return (
+        <div className="insights">
+          <p>Engagement: {media.insight?.engagement}</p>
+          <p>Impressions: {media.insight?.impressions}</p>
+          <p>Reach: {media.insight?.reach}</p>
+          <p>Saved: {media.insight?.saved}</p>
+          <p>Video Views: {media.insight?.video_views}</p>
+        </div>
+      );
+    }
+    case "CAROUSEL_ALBUM": {
+      return (
+        <div className="insights">
+          <p>Engagement: {media.albumInsight?.carousel_album_engagement}</p>
+          <p>Impressions: {media.albumInsight?.carousel_album_engagement}</p>
+          <p>Reach: {media.albumInsight?.carousel_album_reach}</p>
+          <p>Saved: {media.albumInsight?.carousel_album_saved}</p>
+          <p>Video Views: {media.albumInsight?.carousel_album_video_views}</p>
+        </div>
+      );
+    }
+    case "STORY": {
+      break;
+    }
+    default: {
+      break;
+    }
   }
 };
 
-export const getMediaInsightsForAlbum = async (
-  mediaID: string,
-  accessToken: string
-): Promise<any> => {
-  try {
-    const requestURL = `/${mediaID}/insights?metric=carousel_album_engagement,carousel_album_impressions,carousel_album_reach,carousel_album_saved,carousel_album_video_views&access_token=${accessToken}`;
-    const response = await facebookAPI.get(requestURL);
-    return response;
-  } catch (err) {
-    console.log(
-      `There is an error occurred while making request to FB Graph API: ${err}`
-    );
-  }
-};
-
-export const getMediaInsightsForStory = async (
-  mediaID: string,
-  accessToken: string
-): Promise<any> => {
-  try {
-    const requestURL = `/${mediaID}/insights?metric=exits,impressions,reach,replies,taps_forward,taps_back&access_token=${accessToken}`;
-    const response = await facebookAPI.get(requestURL);
-    return response;
-  } catch (err) {
-    console.log(
-      `There is an error occurred while making request to FB Graph API: ${err}`
-    );
-  }
+const renderMediaData = (media: instagramMedia) => {
+  return (
+    <div className="mediaData">
+      <p>Media ID: {media.id}</p>
+      <p>Media Type: {media.media_type}</p>
+      <p>Like Count: {media.like_count} </p>
+      <p>Comments Count: {media.comments_count}</p>
+    </div>
+  );
 };
 
 const InstagramMedia: React.FC<{
   media: instagramMedia;
 }> = ({ media }) => {
+  const classes = useStyles();
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <div className="instagramMedia">
-      <img
-          className="media_url"
-          src={media.media_url}
-          alt=""
-        />
-      {media.id}
-      {media.like_count}
-      {media.comments_count}
-      {media.caption}
-      {media.media_type}
-      {media.media_url}
-      {media.permalink}
-      {media.timestamp}
-      {media.username}
-    </div>
+    <Card className={classes.root}>
+      <CardHeader
+        avatar={
+          <Avatar aria-label="recipe" className={classes.avatar}>
+            A
+          </Avatar>
+        }
+        title={media.username}
+        subheader={media.timestamp}
+      />
+      <CardMedia
+        className={classes.media}
+        image={media.media_url}
+        title={media.id}
+      />
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="div">
+          {renderMediaData(media)}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="div">
+          {renderMediaInsight(media)}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <IconButton aria-label="share" href={media.permalink}>
+          <ShareIcon />
+        </IconButton>
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>Caption: {media.caption}</Typography>
+        </CardContent>
+      </Collapse>
+    </Card>
   );
-}
+};
 
 export default InstagramMedia;

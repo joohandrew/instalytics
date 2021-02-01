@@ -8,6 +8,8 @@ import InstagramBusinessAccount from "../../pages/instagramBusinessAccount/insta
 import "../../common/styles";
 import "./app.component.css";
 import Navigation from "../navigation/navigation.component";
+import Account from "../../pages/account/account.page";
+import About from "../../pages/about/about.page";
 
 const App: React.FC = () => {
   return (
@@ -22,6 +24,8 @@ const App: React.FC = () => {
             component={InstagramBusinessAccount}
           ></Route>
           <Route path="/login" component={Login}></Route>
+          <Route path="/account" component={Account}></Route>
+          <Route path="/about" component={About}></Route>
         </Switch>
       </Router>
     </div>
