@@ -17,6 +17,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import { useSessionContext } from "../../contexts/sessionContext";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Navigation: React.FC<RouteComponentProps> = (
   props: RouteComponentProps
 ) => {
+  const [sessionContext, updateSessionContext] = useSessionContext();
   const { history } = props;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -45,6 +47,10 @@ const Navigation: React.FC<RouteComponentProps> = (
   };
 
   const handleMenuClick = (pageURL: string) => {
+    updateSessionContext({
+      ...sessionContext,
+      redirectPathOnAuthentication: pageURL,
+    });
     history.push(pageURL);
     setAnchorEl(null);
   };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IInstagramBusinessAccount } from "../../common/interfaces/IInstagramBusinessAccount";
 import {
   getAllAccounts,
@@ -6,17 +6,19 @@ import {
   getInstagramBusinessAccount,
 } from "../../common/utils/facebookAPI";
 import InstagramBusinessAccountList from "../../components/instagramBusinessAccount/instagramBusinessAccountList";
+import { useSessionContext } from "../../contexts/sessionContext";
 
 const Home: React.FC = () => {
+  const [sessionContext] = useSessionContext();
   const [loaded, setLoaded] = useState(false);
   const [
     instagramBusinessAccountArray,
     setInstagramBusinessAccountArray,
   ] = useState([] as IInstagramBusinessAccount[]);
+  const accessToken = sessionContext.accessToken || ""
 
   useEffect(() => {
     async function loadContent() {
-      const accessToken = localStorage.getItem("accessToken") || "";
       const arrayOfInstagramBusinessAccounts: Array<IInstagramBusinessAccount> = await getAllPagesWithUser(
         accessToken
       );
@@ -28,7 +30,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className="home">
+    <div className="home"> 
       <InstagramBusinessAccountList
         arrayOfInstagramBusinessAccounts={instagramBusinessAccountArray}
       />

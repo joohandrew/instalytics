@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { Location } from "history";
+import { RouteComponentProps, useLocation } from "react-router-dom";
+import { IInstagramBusinessAccount } from "../../common/interfaces/IInstagramBusinessAccount";
 import { IMedia } from "../../common/interfaces/IMedia";
 import { IMediaAlbumInsight } from "../../common/interfaces/IMediaAlbumInsight";
 import { IMediaInsight } from "../../common/interfaces/IMediaInsight";
@@ -14,26 +16,23 @@ import {
   getMediaInsightsForVideo,
 } from "../../common/utils/facebookAPI";
 import InstagramMediaList from "../../components/instagramMedia/instagramMediaList";
+import { useSessionContext } from "../../contexts/sessionContext";
 
-interface IInstagramBusinessAccountLocationState {
-  id: string;
+interface LocationState {
+  instagramBusinessAccount : IInstagramBusinessAccount;
 }
 
-const InstagramBusinessAccount: React.FC<RouteComponentProps> = (
-  props: RouteComponentProps<
-    {},
-    any,
-    IInstagramBusinessAccountLocationState | any
-  >
-) => {
+const InstagramBusinessAccount: React.FC = () => {
+  const [sessionContext] = useSessionContext();
   const [mounted, setMounted] = useState(false);
   const [mediaArray, setMediaArray] = useState([] as IMedia[]);
+  const accessToken = sessionContext.accessToken || ""
+  const location = useLocation<LocationState>();
 
   useEffect(() => {
     async function loadContent() {
-      const accessToken = localStorage.getItem("accessToken") || "";
       const mediaArray = await loadMediaForInstagramBusinessAccount(
-        props.location.state.id,
+        location.state.instagramBusinessAccount.id,
         accessToken
       );
       setMediaArray(mediaArray);

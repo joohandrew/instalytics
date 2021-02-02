@@ -1,15 +1,14 @@
 import React from "react";
 import FacebookLogin from "react-facebook-login";
 import { useHistory } from "react-router-dom";
+import { useSessionContext } from "../../../contexts/sessionContext";
 
 const Facebook: React.FC = () => {
+  const [sessionContext, updateSessionContext] = useSessionContext();
   const history = useHistory();
 
   const responseFacebook = (response: any) => {
-    localStorage.setItem("name", response.name);
-    localStorage.setItem("email", response.email);
-    localStorage.setItem("picture", response.picture.data.url);
-    localStorage.setItem("accessToken", response.accessToken);
+    updateSessionContext({...sessionContext, isAuthenticated: true, accessToken: response.accessToken});
     history.push("/");
   };
 
@@ -19,7 +18,7 @@ const Facebook: React.FC = () => {
         appId="814621629389417"
         autoLoad={true}
         fields="name,email,picture"
-        callback={responseFacebook}
+        callback={(response) => responseFacebook(response)}
       />
     </div>
   );

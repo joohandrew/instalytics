@@ -12,9 +12,9 @@ const InstagramBusinessAccountList: React.FC<InstagramBusinessAccountProps> = ({
 }: InstagramBusinessAccountProps) => {
   return (
     <div className="instagramBusinessAccountList">
-      {arrayOfInstagramBusinessAccounts.map((igAcc) => (
-        <div key={igAcc.id}>
-          <InstagramBusinessAccountItem igBusinessAccount={igAcc} />
+      {arrayOfInstagramBusinessAccounts.map((instagramBusinessAccount) => (
+        <div key={instagramBusinessAccount.id}>
+          <InstagramBusinessAccountItem instagramBusinessAccount={instagramBusinessAccount} />
         </div>
       ))}
     </div>
