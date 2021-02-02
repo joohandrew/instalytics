@@ -16,10 +16,10 @@ import { Session } from "../../models/session";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    // maxWidth: 345,
   },
   media: {
-    height: 140,
+    height: 400,
   },
 });
 

@@ -21,11 +21,10 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      maxWidth: 345,
+
     },
     media: {
-      height: 0,
-      paddingTop: "56.25%", // 16:9
+      paddingTop: "100%",
     },
     expand: {
       transform: "rotate(0deg)",
@@ -52,6 +51,7 @@ const renderMediaInsight = (media: IMedia) => {
           <p>Impressions: {media.insight?.impressions}</p>
           <p>Reach: {media.insight?.reach}</p>
           <p>Saved: {media.insight?.saved}</p>
+          <p>Video Views: N/A</p>
         </div>
       );
     }
