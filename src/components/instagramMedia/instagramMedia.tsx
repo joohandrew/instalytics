@@ -20,9 +20,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-
-    },
+    root: {},
     media: {
       paddingTop: "100%",
     },
@@ -41,39 +39,86 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-const renderMediaInsight = (media: IMedia) => {
+const renderMediaData = (media: IMedia) => {
   switch (media.media_type) {
     case "IMAGE": {
+      if (!media.insight) {
+        return (
+          <div className="insights">
+            Image {"\n"}
+            Like Count: {"\n"}
+            Comments Count: {"\n"}
+          </div>
+        );
+      }
       return (
         <div className="insights">
-          <p>Engagement: {media.insight?.engagement}</p>
-          <p>Impressions: {media.insight?.impressions}</p>
-          <p>Reach: {media.insight?.reach}</p>
-          <p>Saved: {media.insight?.saved}</p>
-          <p>Video Views: N/A</p>
+          {/* {media.id}
+          {"\n"} */}
+          Image {/* {media.media_type} */}
+          {"\n"}
+          {media.like_count}
+          {"\n"}
+          {media.comments_count}
+          {"\n"}
+          {media.insight?.engagement}
+          {"\n"}
+          {media.insight?.impressions}
+          {"\n"}
+          {media.insight?.reach}
+          {"\n"}
+          {media.insight?.saved}
+          {"\n"}
+          N/A
+          {"\n"}
         </div>
       );
     }
     case "VIDEO": {
       return (
         <div className="insights">
-          <p>Engagement: {media.insight?.engagement}</p>
-          <p>Impressions: {media.insight?.impressions}</p>
-          <p>Reach: {media.insight?.reach}</p>
-          <p>Saved: {media.insight?.saved}</p>
-          <p>Video Views: {media.insight?.video_views}</p>
+          {/* {media.id}
+          {"\n"} */}
+          Video {/* {media.media_type} */}
+          {"\n"}
+          {media.like_count}
+          {"\n"}
+          {media.comments_count}
+          {"\n"}
+          {media.insight?.engagement}
+          {"\n"}
+          {media.insight?.impressions}
+          {"\n"}
+          {media.insight?.reach}
+          {"\n"}
+          {media.insight?.saved}
+          {"\n"}
+          {media.insight?.video_views}
+          {"\n"}
         </div>
       );
     }
     case "CAROUSEL_ALBUM": {
       return (
         <div className="insights">
-          <p>Engagement: {media.albumInsight?.carousel_album_engagement}</p>
-          <p>Impressions: {media.albumInsight?.carousel_album_engagement}</p>
-          <p>Reach: {media.albumInsight?.carousel_album_reach}</p>
-          <p>Saved: {media.albumInsight?.carousel_album_saved}</p>
-          <p>Video Views: {media.albumInsight?.carousel_album_video_views}</p>
+          {/* {media.id}
+          {"\n"} */}
+          Carousel 
+          {"\n"}
+          {media.like_count}
+          {"\n"}
+          {media.comments_count}
+          {"\n"}
+          {media.albumInsight?.carousel_album_engagement}
+          {"\n"}
+          {media.albumInsight?.carousel_album_engagement}
+          {"\n"}
+          {media.albumInsight?.carousel_album_reach}
+          {"\n"}
+          {media.albumInsight?.carousel_album_saved}
+          {"\n"}
+          {media.albumInsight?.carousel_album_video_views}
+          {"\n"}
         </div>
       );
     }
@@ -86,13 +131,29 @@ const renderMediaInsight = (media: IMedia) => {
   }
 };
 
-const renderMediaData = (media: IMedia) => {
+const renderContentHeaders = (media: IMedia) => {
+  if (!media.albumInsight && !media.insight) {
+    return (
+      <div className="mediaData">
+        {/* Media ID: {"\n"} */}
+        Media Type: {"\n"}
+        Like Count: {"\n"}
+        Comments Count: {"\n"}
+        The media was posted before the most recent time that the user's account was converted to a business account from a personal account.
+      </div>
+    );
+  }
   return (
     <div className="mediaData">
-      <p>Media ID: {media.id}</p>
-      <p>Media Type: {media.media_type}</p>
-      <p>Like Count: {media.like_count} </p>
-      <p>Comments Count: {media.comments_count}</p>
+      {/* Media ID: {"\n"} */}
+      Media Type: {"\n"}
+      Like Count: {"\n"}
+      Comments Count: {"\n"}
+      Engagement: {"\n"}
+      Impressions: {"\n"}
+      Reach: {"\n"}
+      Saved: {"\n"}
+      Video Views: {"\n"}
     </div>
   );
 };
@@ -116,19 +177,39 @@ const InstagramMedia: React.FC<{
           </Avatar>
         }
         title={media.username}
-        subheader={media.timestamp}
+        subheader={new Date(media.timestamp).toLocaleString()}
       />
       <CardMedia
         className={classes.media}
         image={media.media_url}
         title={media.id}
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="div">
-          {renderMediaData(media)}
+      /> 
+      <CardContent style={{ textAlign: "left" }}>
+        <Typography
+          variant="subtitle2"
+          color="textPrimary"
+          component="div"
+          style={{
+            whiteSpace: "pre-line",
+            textAlign: "left",
+            display: "inline-block",
+            fontWeight: "bold",
+          }}
+        >
+          {renderContentHeaders(media)}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="div">
-          {renderMediaInsight(media)}
+        <Typography
+          variant="subtitle2"
+          color="textPrimary"
+          component="div"
+          style={{
+            whiteSpace: "pre-line",
+            textAlign: "left",
+            display: "inline-block",
+            marginLeft: "10px",
+          }}
+        >
+          {renderMediaData(media)}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

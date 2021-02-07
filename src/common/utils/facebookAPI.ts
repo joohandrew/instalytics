@@ -48,13 +48,29 @@ export const getInstagramBusinessAccountData = async (
   }
 };
 
-// Instagram Media  
-export const getAllMedia = async (
+export const getInstagramBusinessAccountMediaList = async (
   instagramBusinessAccountID: string,
   accessToken: string
 ): Promise<any> => {
   try {
     const requestURL = `/${instagramBusinessAccountID}?fields=media_count,media&access_token=${accessToken}`;
+    const response = await facebookAPI.get(requestURL);
+    return response;
+  } catch (err) {
+    console.log(
+      `There is an error occurred while making request to FB Graph API: ${err}`
+    );
+  }
+};
+
+// Instagram Media  
+export const getAllMedia = async (
+  instagramBusinessAccountID: string,
+  accessToken: string,
+  media_count: number
+): Promise<any> => {
+  try {
+    const requestURL = `/${instagramBusinessAccountID}/media?fields=caption,comments_count,id,like_count,media_type,media_url,permalink,username,timestamp&limit=${media_count}&access_token=${accessToken}`;
     let response = await facebookAPI.get(requestURL);
     return response;
   } catch (err) {
